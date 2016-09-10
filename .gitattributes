@@ -1,3 +1,5 @@
+*.projectc0 binary
+
 # Auto detect text files and perform LF normalization
 * text=auto
 
@@ -15,5 +17,3 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
-
-*.projectc0 binary
