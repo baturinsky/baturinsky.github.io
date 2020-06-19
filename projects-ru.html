@@ -8,6 +8,7 @@
   }
   body {
     font-family: Text, "Courier New", Courier, monospace;
+    text-align: justify;
   }
   #projects {
     display: grid;
@@ -43,6 +44,11 @@
     border-bottom: dotted 1px black;
   }
 
+  p {
+    margin: 0;
+    margin-top: 0.5em;
+  }
+
   @keyframes blinker {
     50% {
       color: lightblue;
@@ -62,16 +68,17 @@
   }
 
   #intro {
-    display: flex;
-    flex-direction: column;
   }
 </style>
 <body>
   <div id="intro">
     <h3>Александр Петров</h3>
-    <a href="https://twitter.com/baturinsky">https://twitter.com/baturinsky</a>
-    <a href="https://github.com/baturinsky">https://github.com/baturinsky</a>
-    <a href="https://vk.com/id436844849">https://vk.com/id436844849</a>
+
+    https://twitter.com/baturinsky
+
+    https://github.com/baturinsky
+
+    https://vk.com/id436844849
   </div>
   <div id="projects"></div>
 </body>
@@ -82,10 +89,36 @@
     article: "постмортем",
   };
   let projects = [
+  {
+      title: `Scala-Ecc`,
+      languages: `Scala`,
+      source: `https://github.com/baturinsky/Scala-Ecc`,
+      text: `Бибилиотека для подписывания и проверки цифровых подписей по алгоритму ECDSA`
+    },
+  {
+      title: `Physics Yes/No`,
+      languages: `C#`,
+      libraries: `Unity`,
+      link: `https://baturinsky.itch.io/physics-yesno`,
+      screenshot: `PYN.jpg`,
+      video: `https://youtu.be/fkxu4TB1NU4`,
+      text: `Головоломка, основанная на выключении и включении законов физики, таких как гравитация и трение`
+    },    {
+      title: `Glue Time`,
+      source: `https://github.com/baturinsky/GlueTime`,
+      languages: `Lua`,
+      libraries: `Defold`,
+      link: `https://baturinsky.itch.io/glue-time`,
+      screenshot: `gluetime.png`,
+      video: `https://www.youtube.com/watch?v=ljzdAWzZ3PI`,
+      text: `Shmup, где игрок собирает свой корабль, выдёргивая куски из кораблей противника`
+    },    
     {
       title: `Seeing Red`,
       quote: `Михаил Кузьмин: "Люблю, когда для достижения цели используется минимально необходимый набор.`,
       source: `https://github.com/baturinsky/seeing-red`,
+      language: `TypeScript`,
+      libraries: [`Svelte`, `rot.js`],
       link: `http://seeing-red.netlify.com`,
       article: [
         `https://dtf.ru/indie/55074-seeing-red`,
@@ -113,6 +146,8 @@
     {
       title: `XPedia`,
       source: `https://github.com/baturinsky/xpedia`,
+      languages: `TypeScript`,
+      libraries: [`Svelte`, `fuse.js`, `js-yaml`, `pako`],
       link: [
         `https://xpedia.netlify.com`,
         `Сайт, поддерживаемый русским коммунити XPiratez|https://xpiratez.wtf`,
@@ -125,6 +160,8 @@
       title: `Monstromino`,
       quote: `Wayward Son: You made a literal excel spreadsheet simulator... Kudos`,
       source: `https://github.com/baturinsky/monstromino`,
+      languages: `TypeScript`,
+      libraries: `Svelte`,
       link: `https://monstromino.netlify.com/`,
       screenshot: `monstromino.png`,
       text: `Внеджемовский проект. Вдохновлен деревом навыков из Path of Exile. Я как-то взглянул и подумал «это такая сложная штука,
@@ -137,6 +174,7 @@
       quote: `Christer Kaitila: Absolutely awesome! What an amazing, fresh, original, and fun mashup between
   light cycles / snake / breakout / arkanoid and an invaders game.`,
       source: `https://github.com/baturinsky/Snake-vs-invaders`,
+      languages: `TypeScript`,
       link: [
         `https://snake-vs-invaders.netlify.com/`,
         `На сайте джема|https://js13kgames.com/entries/snake-vs-invaders`,
@@ -158,6 +196,7 @@
       title: `Fat Kids on Trampoline`,
       quote: `Pedro Fortuna: Funny concept! I like that the kids can lose things like their hats.`,
       source: `https://github.com/baturinsky/fat-kids-on-trampoline`,
+      languages: `TypeScript`,
       link: [
         `https://fat-kids-on-trampoline.netlify.com/`,
         `На сайте джема|https://js13kgames.com/entries/fat-kids-on-trampoline`,
@@ -174,6 +213,8 @@
       title: `2AP`,
       quote: `Christer Kaitila: What a tight, fun, cool, tactically satisfying game!`,
       source: `https://github.com/baturinsky/2ap`,
+      languages: `TypeScript`,
+      libraries: `preact`,
       link: [
         `http://2ap.netlify.com`,
         `На сайте джема|https://js13kgames.com/entries/2ap-backyard-assault`,
@@ -188,6 +229,8 @@
       quote: `velvetlobster: I love chess. And I also happen to love different implementations of chess games,
   with sometimes a few different moves and different rules … this was fun and also a very good interpretation of the theme, thanks for making this!`,
       source: `https://github.com/baturinsky/wswn`,
+      languages: `TypeScript`,
+      libraries: `preact`,
       link: [
         `http://wswn.netlify.com`,
         `Игра на сайте джема с отзывами и постмортемом|https://ldjam.com/events/ludum-dare/45/white-starts-with-nothing`,
@@ -209,6 +252,8 @@
     {
       title: `Emoji Soup Heritage`,
       source: `https://github.com/baturinsky/emoji-soup`,
+      languages: `TypeScript`,
+      libraries: `preact`,
       link: `https://emoji-soup.netlify.com/`,
       screenshot: `emoji.png`,
       text: `
@@ -229,6 +274,8 @@
       title: `Marshmallow Sky`,
       quote: `Алексей Иванович: Математика очень впечатляет. Хотя мало что понятно.`,
       source: `https://github.com/baturinsky/marshmallow-sky`,
+      languages: [`TypeScript`, `glsl`],
+      libraries: [`preact`, `twgl`],
       link: `https://marshmallow-sky.netlify.com/`,
       article: `https://dtf.ru/hackathon/82345-marshmallow-sky-postmortem`,
       screenshot: `marshmallow.jpg`,
@@ -243,31 +290,81 @@
       title: `Boundless City`,
       quote: `GMPguy: I must admit, that the audiovisual side of this game, is by far the most unique of all the entries I've tried so far!`,
       source: `https://github.com/baturinsky/boundless-city`,
+      languages: [`TypeScript`, `glsl`],
+      libraries: [`preact`, `twgl`],
       link: [
         `https://boundless-city.netlify.com`,
         `Игра с отзывами|https://baturinsky.itch.io/boundless-city`,
       ],
       article: `https://dtf.ru/indie/87687-boundless-city-gorod-beskonechnyy-v-treh-izmereniyah`,
       screenshot: `omsk.png`,
+      video: `https://i.imgur.com/iGTOlVf.mp4`,
       text: `Ну и самая «графоновая» моя игра на данный момент. Тот же «планерный» геймплей но «углубленный» системой апгрейдов и т.д. И гораздо более сложный алгоритм генерации уровня — бесконечного в высоту и ширину города. Ну и музыка от того же The Soundsmith.
 
   Место, увы, только 22е. Даже по графике только 18е, хотя, наверное, это всё равно лучшая графика среди моих игр:)`,
     },
+    {
+      title: `Cellular: Automata`,
+      quote: `Thermacon: Very interesting idea. Took me a while to get through some of them. Great interface. Amazing work!`,
+      source: `https://github.com/baturinsky/cellular`,
+      languages: `TypeScript`,
+      libraries: `preact`,
+      link: [
+        `https://github.com/baturinsky/cellular`,
+        `Игра на сайте джема с отзывами и постмортемом|https://ldjam.com/events/ludum-dare/46/cellular-automata`,
+      ],
+      screenshot: `cellular.png`,
+      video: `cellular.gif`,
+      text: `Пазл на тему игры "Жизнь" Конвея
+
+Каждый уровень - это поле в клеточку, часть клеток закрашены ("живые"). 
+И набор карточек, на каждой их которых написано правило в формате Bx/Sy, где x и y - набор цифр. 
+Цифры после B (от birth) - это сколько соседей должна иметь пустая клетка, чтобы после активации этой карты она стала живой. 
+Цифры после S (от survive) - это сколько соседей должна иметь живая клетка, чтобы не "умереть" после действия карты.
+
+Цель игры - сыграть все карты так, чтобы осталась хоть одна живая карта.
+
+По местам чуть похуже предыдущего раза, но ненамного:
+<img src="img/cellular-rankings.png"/>
+      `,
+    }, {
+      title: `Анализ Личности по Барнум-Фостеру`,
+      source: `https://github.com/baturinsky/barnum`,
+      languages: `JavaScript`,
+      link: `https://barnum.netlify.app/#ru`,
+      screenshot: `barnum.png`,
+      text: `Проект-шутка, "анализирующий личность", выдавая случайно перемешенный расплывчатые фразы.`
+    }, {
+      title: `Voronoi'less Terrain Generator`,
+      source: `https://github.com/baturinsky/worldgen`,
+      languages: `JavaScript`,
+      link: `https://batgen.netlify.app/`,
+      screenshot: `worldgen.png`,
+      text: `
+
+      `
+    }
   ];
 
   let html = [];
 
-  for (let p of projects) {
+  function formatText(text){
+    return (text || "")
+      .split("\n\n")
+      .map((s) => `<p>${s}</p>`)
+      .join("\n")
+      .replace(/(https?:\/\/[\S]+)/gm, `<a href="$1">$1</a>`);
+  }
+
+  document.getElementById("intro").innerHTML = formatText(document.getElementById("intro").innerHTML);
+
+  for (let p of projects.reverse()) {
     html.push(`<header>${p.title}</header>`);
     let text = "";
 
     if (p.quote) text += `<p class="quote">${p.quote}</p>${text}`;
     text += p.text;
-    text = (text || "")
-      .split("\n\n")
-      .map((s) => `<p>${s}</p>`)
-      .join("\n")
-      .replace(/(https?:\/\/[\S]+)/gm, `<a href="$1">$1</a>`);
+    text = formatText(text);
 
     let linksText = "";
     for (let linkType of ["source", "link", "article"]) {
@@ -291,10 +388,14 @@
 
     html.push(`<div>${text}</div>`);
 
-    html.push(
-      `<a href="img/${p.video || p.screenshot}">${
+    let [screenshot, video] = [p.screenshot, p.video].map((link) =>
+      link ? (link.substr(0, 4) == "http" ? link : "img/" + link) : null
+    );
+
+    html.push(screenshot?
+      `<a href="${video || screenshot}">${
         p.video ? `<div class="video">video</div>` : ""
-      }<img class="screenshot" src="img/${p.screenshot}"></a>`
+      }<img class="screenshot" src="${screenshot}"></a>`:`<div style="height:10em;"/>`
     );
   }
 
