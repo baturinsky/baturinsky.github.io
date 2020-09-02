@@ -6,16 +6,23 @@
     font-display: swap;
     src: url("Golos Text_Regular.woff") format("woff");
   }
+
   body {
     font-family: Text, "Courier New", Courier, monospace;
-    text-align: justify;
   }
-  #projects {
+
+  #projectsDiv {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1em;
+    grid-template-columns: 500px 700px;
+    column-gap: 5px;
   }
-  #projects > header {
+
+  #main {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  #projectsDiv > header {
     grid-column: span 2;
     font-weight: bold;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
@@ -23,13 +30,28 @@
     margin-top: 1em;
     margin-bottom: 0.5em;
   }
+
+  .tagCheck {
+    border: solid 0.5px gray;
+    margin: 3px;
+    padding: 3px;
+  }
+
+  #tagsDiv {
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: row;
+  }
+
   .screenshot {
     height: 400px;
   }
+
   .quote {
     font-style: italic;
     font-weight: 100;
   }
+
   .links {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -58,6 +80,7 @@
   .video {
     animation: blinker 1s linear infinite;
     position: relative;
+    left: 5px;
     height: 0;
     text-shadow: 0px 0px 2px black;
   }
@@ -68,19 +91,20 @@
   }
 
   #intro {
+    display: flex;
+    flex-flow: column;
   }
 </style>
 <body>
-  <div id="intro">
-    <h3>Александр Петров</h3>
-
-    https://twitter.com/baturinsky
-
-    https://github.com/baturinsky
-
-    https://vk.com/id436844849
+  <div id="main">
+    <div id="intro">
+      <h3>Александр Петров</h3>
+      https://github.com/baturinsky https://twitter.com/baturinsky
+      https://vk.com/id436844849
+    </div>
+    <div id="tagsDiv"></div>
+    <div id="projectsDiv"></div>
   </div>
-  <div id="projects"></div>
 </body>
 <script>
   let lang = {
@@ -89,34 +113,39 @@
     article: "постмортем",
   };
   let projects = [
-  {
+    {
       title: `Scala-Ecc`,
+      tags: `Scala,.NET,cryptography`,
       languages: `Scala`,
       source: `https://github.com/baturinsky/Scala-Ecc`,
-      text: `Бибилиотека для подписывания и проверки цифровых подписей по алгоритму ECDSA`
+      text: `Бибилиотека для подписывания и проверки цифровых подписей по алгоритму ECDSA`,
     },
-  {
+    {
       title: `Physics Yes/No`,
+      tags: `C#,Unity`,
       languages: `C#`,
       libraries: `Unity`,
       link: `https://baturinsky.itch.io/physics-yesno`,
       screenshot: `PYN.jpg`,
       video: `https://youtu.be/fkxu4TB1NU4`,
-      text: `Головоломка, основанная на выключении и включении законов физики, таких как гравитация и трение`
-    },    {
+      text: `Головоломка, основанная на выключении и включении законов физики, таких как гравитация и трение`,
+    },
+    {
       title: `Glue Time`,
       source: `https://github.com/baturinsky/GlueTime`,
+      tags: `Lua,Defold`,
       languages: `Lua`,
       libraries: `Defold`,
       link: `https://baturinsky.itch.io/glue-time`,
       screenshot: `gluetime.png`,
       video: `https://www.youtube.com/watch?v=ljzdAWzZ3PI`,
-      text: `Shmup, где игрок собирает свой корабль, выдёргивая куски из кораблей противника`
-    },    
+      text: `Shmup, где игрок собирает свой корабль, выдёргивая куски из кораблей противника`,
+    },
     {
       title: `Seeing Red`,
       quote: `Михаил Кузьмин: "Люблю, когда для достижения цели используется минимально необходимый набор.`,
       source: `https://github.com/baturinsky/seeing-red`,
+      tags: `TypeScript,Svelte`,
       language: `TypeScript`,
       libraries: [`Svelte`, `rot.js`],
       link: `http://seeing-red.netlify.com`,
@@ -128,24 +157,25 @@
       rankings: `https://dtf.ru/indie/61441-indi-dzhem-dtf-itogi`,
       screenshot: `seeing-red.png`,
       text: `
-  «Анти-анти-хоррор» в формате stealth roguelike.
+    «Анти-анти-хоррор» в формате stealth roguelike.
 
-  Идея джема была "не то, чем кажется", так что то, о чем игра на самом деле - это большой твист и стоит его понять, потратив пять минут на игру самим.
+    Идея джема была "не то, чем кажется", так что то, о чем игра на самом деле - это большой твист и стоит его понять, потратив пять минут на игру самим.
 
-  Но если лень — суть вот в чем.
+    Но если лень — суть вот в чем.
 
-  <spoiler>
+    <spoiler>
 
-  Изначально кажется, что игрок — это человек, прячущийся от монстров чтобы не быть ими убитым. Но на самом деле, игрок - это монстр, который прячется от людей, чтобы не убить их.
+    Изначально кажется, что игрок — это человек, прячущийся от монстров чтобы не быть ими убитым. Но на самом деле, игрок - это монстр, который прячется от людей, чтобы не убить их.
 
-  </spoiler>
+    </spoiler>
 
-  Из удавшихся вещей — управление мышкой и AI «врагов», которые меняют поведение в зависимости от того, насколько герой «страшный».
-  `,
+    Из удавшихся вещей — управление мышкой и AI «врагов», которые меняют поведение в зависимости от того, насколько герой «страшный».
+    `,
     },
     {
       title: `XPedia`,
       source: `https://github.com/baturinsky/xpedia`,
+      tags: `TypeScript,Svelte`,
       languages: `TypeScript`,
       libraries: [`Svelte`, `fuse.js`, `js-yaml`, `pako`],
       link: [
@@ -154,26 +184,28 @@
       ],
       screenshot: `xpedia.png`,
       text: `Автоматически генерируемая справка для XPiratez и других игр на движке OpenXCom. Начинал писать параллельно с Seeing Red,
-  продолжаю править и доделывать поныне. Пожалуй, самый популярный мой проект на данный момент.`,
+    продолжаю править и доделывать поныне. Пожалуй, самый популярный мой проект на данный момент.`,
     },
     {
       title: `Monstromino`,
       quote: `Wayward Son: You made a literal excel spreadsheet simulator... Kudos`,
       source: `https://github.com/baturinsky/monstromino`,
+      tags: `TypeScript,Svelte`,
       languages: `TypeScript`,
       libraries: `Svelte`,
       link: `https://monstromino.netlify.com/`,
       screenshot: `monstromino.png`,
       text: `Внеджемовский проект. Вдохновлен деревом навыков из Path of Exile. Я как-то взглянул и подумал «это такая сложная штука,
-  она может быть игрой сама по себе». Ну и сделал прототип игры, в которой дерево развития и игровой «мир» — это одно и то же.
-  А конкретно — граф с монстрами-полимино в узлах. Для победы над каждым нужны определенные статы (используется алгоритм автобоя),
-  и каждый дает стат своего цвета за победу. Цель — проложить путь через граф, чтобы успеть дойти до конца поля и собрать как можно больше очков.`,
+    она может быть игрой сама по себе». Ну и сделал прототип игры, в которой дерево развития и игровой «мир» — это одно и то же.
+    А конкретно — граф с монстрами-полимино в узлах. Для победы над каждым нужны определенные статы (используется алгоритм автобоя),
+    и каждый дает стат своего цвета за победу. Цель — проложить путь через граф, чтобы успеть дойти до конца поля и собрать как можно больше очков.`,
     },
     {
       title: `Snake vs Invaders`,
       quote: `Christer Kaitila: Absolutely awesome! What an amazing, fresh, original, and fun mashup between
-  light cycles / snake / breakout / arkanoid and an invaders game.`,
+    light cycles / snake / breakout / arkanoid and an invaders game.`,
       source: `https://github.com/baturinsky/Snake-vs-invaders`,
+      tags: `TypeScript,js13k`,
       languages: `TypeScript`,
       link: [
         `https://snake-vs-invaders.netlify.com/`,
@@ -183,19 +215,20 @@
       screenshot: "snake.png",
       video: "snake.gif",
       text: `
-  Первый и «главный» проект на джем https://js13kgames.com/
+    Первый и «главный» проект на джем https://js13kgames.com/
 
-  Темой для джема было «back». Я тогда решил попробовать подойти к выбору идеи по-другому и накидал несколько и попросил на DTF помочь выбрать https://dtf.ru/indie/64002-nachalsya-dzhem-js13kgames-tema-back-nakidal-idey-pomogite-vybrat
+    Темой для джема было «back». Я тогда решил попробовать подойти к выбору идеи по-другому и накидал несколько и попросил на DTF помочь выбрать https://dtf.ru/indie/64002-nachalsya-dzhem-js13kgames-tema-back-nakidal-idey-pomogite-vybrat
 
-  Но потом всё же вернулся к первоначальной идее — игре про отбивание пуль змеёй. И с кучей персонажей, которых всех персонажей зовут Змей (Сэр Змей, Лейтенант Змей, Принцесса Змей, Дядя Змей и т.д.). Правда, собственно в игре из сюжета только небольшой кусочек.
+    Но потом всё же вернулся к первоначальной идее — игре про отбивание пуль змеёй. И с кучей персонажей, которых всех персонажей зовут Змей (Сэр Змей, Лейтенант Змей, Принцесса Змей, Дядя Змей и т.д.). Правда, собственно в игре из сюжета только небольшой кусочек.
 
-  Увы, заняла только 24е место. Ниже всего был балл за графику.
-  `,
+    Увы, заняла только 24е место. Ниже всего был балл за графику.
+    `,
     },
     {
       title: `Fat Kids on Trampoline`,
       quote: `Pedro Fortuna: Funny concept! I like that the kids can lose things like their hats.`,
       source: `https://github.com/baturinsky/fat-kids-on-trampoline`,
+      tags: `TypeScript,js13k`,
       languages: `TypeScript`,
       link: [
         `https://fat-kids-on-trampoline.netlify.com/`,
@@ -204,15 +237,16 @@
       screenshot: `fat-kids.png`,
       video: `fat-kids.mp4`,
       text: `После того, как Snake vs Invaders был закончен (точнее, закончилось место в отведенный 13 килобайтах), у меня было ещё немного времени до дедлайана.
-  А адреналин не отпускал. Хотелось сделать что-то с физикой. И за два дня сделал игру про толстых детей, спихивающих друг друга с батута.
-  Из них второй день ушёл в основном на анимацию отлетающих ботинок, очков и прочего при ударе.
+    А адреналин не отпускал. Хотелось сделать что-то с физикой. И за два дня сделал игру про толстых детей, спихивающих друг друга с батута.
+    Из них второй день ушёл в основном на анимацию отлетающих ботинок, очков и прочего при ударе.
 
-  58е место.`,
+    58е место.`,
     },
     {
       title: `2AP`,
       quote: `Christer Kaitila: What a tight, fun, cool, tactically satisfying game!`,
       source: `https://github.com/baturinsky/2ap`,
+      tags: `TypeScript,js13k,React`,
       languages: `TypeScript`,
       libraries: `preact`,
       link: [
@@ -222,13 +256,14 @@
       screenshot: `2ap.png`,
       text: `До конца джема еще 49 часов, и адреналин всё ещё не отпускал. И я решил потратить его на то, что давно хотел попробовать— сделать XCOM, как от Firaxis. С точно такой же механикой укрытий и учитывающий её AI. И даже редактором уровней. по удивательному стечению обстоятельств я это сделать успел. Из важного не успел только анимацию высовывания из укрытий, поэтому те, кто в «настоящий» XCOM не играли, очень удивлялись пулям, пролетающим сквозь стены.
 
-  35е место.`,
+    35е место.`,
     },
     {
       title: `White Starts with Nothing`,
       quote: `velvetlobster: I love chess. And I also happen to love different implementations of chess games,
-  with sometimes a few different moves and different rules … this was fun and also a very good interpretation of the theme, thanks for making this!`,
+    with sometimes a few different moves and different rules … this was fun and also a very good interpretation of the theme, thanks for making this!`,
       source: `https://github.com/baturinsky/wswn`,
+      tags: `TypeScript,Ludum Dare,React`,
       languages: `TypeScript`,
       libraries: `preact`,
       link: [
@@ -238,58 +273,61 @@
       screenshot: `wswn.png`,
       text: `Темой было "start with nothing". Ход мысли у меня был такой: чтобы nothing действительно чувствовалась, нужно взять ситуацию, где игрок всегда начинал с something. И потом это отнять.
 
-  Получились шахматы, где одна из сторон (или даже две — есть несколько режимов) начинает без фигур, и игрок постепенно эти фигуры добавляет. Чтобы было еще интереснее, двигает фигуры и за противника, и за сторону игрока AI - игрок только ставит новые.
+    Получились шахматы, где одна из сторон (или даже две — есть несколько режимов) начинает без фигур, и игрок постепенно эти фигуры добавляет. Чтобы было еще интереснее, двигает фигуры и за противника, и за сторону игрока AI - игрок только ставит новые.
 
-  Первый день ушёл на поиск шахматного движка с подходящей лицензией и хакабельным кодом. Остановился на https://github.com/douglasbagnall/p4wn
+    Первый день ушёл на поиск шахматного движка с подходящей лицензией и хакабельным кодом. Остановился на https://github.com/douglasbagnall/p4wn
 
-  Уже после джема сделал версию с более приглядным и «мобильнодружественным» UI, откуда собственно и сделан скриншот.
+    Уже после джема сделал версию с более приглядным и «мобильнодружественным» UI, откуда собственно и сделан скриншот.
 
-  Заняла 6e место в категории Innovation, 8e в категории соответствия теме и 50е вобщем. Учитывая уровень соревнования, это, пожалуй, моя вершина в «джемминге» на данный момент :)
+    Заняла 6e место в категории Innovation, 8e в категории соответствия теме и 50е вобщем. Учитывая уровень соревнования, это, пожалуй, моя вершина в «джемминге» на данный момент :)
 
-  <img src="img/wswn-rankings.png"/>
-`,
+    <img src="img/wswn-rankings.png"/>
+  `,
     },
     {
       title: `Emoji Soup Heritage`,
       source: `https://github.com/baturinsky/emoji-soup`,
+      tags: `TypeScript,Procjam,React`,
       languages: `TypeScript`,
       libraries: `preact`,
       link: `https://emoji-soup.netlify.com/`,
       screenshot: `emoji.png`,
       text: `
-  Сделана в рамках http://www.procjam.com/
+    Сделана в рамках http://www.procjam.com/
 
-  Тема джема была «heritage», поэтому от первоначальных идей для джема я отказался и сделал то, что тоже давно хотел — эмуляцию общества. И не простого, а творческого, которое этот heritage создаёт.
+    Тема джема была «heritage», поэтому от первоначальных идей для джема я отказался и сделал то, что тоже давно хотел — эмуляцию общества. И не простого, а творческого, которое этот heritage создаёт.
 
-  Модель отслеживает жизнь персонажей с шагом в один год. Они получают и развивают умения, продвигаются в карьере, заводят знакомства. Причём учитываются уже существующие навыки и знакомства - можно найти друзей через общие интересы или интересы через друзей и т.д.
+    Модель отслеживает жизнь персонажей с шагом в один год. Они получают и развивают умения, продвигаются в карьере, заводят знакомства. Причём учитываются уже существующие навыки и знакомства - можно найти друзей через общие интересы или интересы через друзей и т.д.
 
-  Чем выше уровень в карьере, тем сложнее продвигаться дальше, но тем больше вероятность создать «наследие» — великий труд. Название труда зависит от карьеры, например для театральной это «пьеса», для исследоательской — «карта», и т.д. И облегчить развитие в этой же карьере для других.
+    Чем выше уровень в карьере, тем сложнее продвигаться дальше, но тем больше вероятность создать «наследие» — великий труд. Название труда зависит от карьеры, например для театральной это «пьеса», для исследоательской — «карта», и т.д. И облегчить развитие в этой же карьере для других.
 
-  Геймплея как такового практически нет - чожно только пролистывать время и смотреть на развите общества.
+    Геймплея как такового практически нет - можно только пролистывать время и смотреть на развите общества.
 
-  К сожалению, эмодзи-фонт, использованый для изображения персонажей, в онлайн версии работает далеко не всегда правильно. Например, вместо одной «головы» получается несколько символов. Ну и по-разному работает на разных браузерах.
-`,
+    К сожалению, эмодзи-фонт, использованый для изображения персонажей, в онлайн версии работает далеко не всегда правильно. Например, вместо одной «головы» получается несколько символов. Ну и по-разному работает на разных браузерах.
+  `,
     },
     {
       title: `Marshmallow Sky`,
       quote: `Алексей Иванович: Математика очень впечатляет. Хотя мало что понятно.`,
       source: `https://github.com/baturinsky/marshmallow-sky`,
+      tags: `TypeScript,WebGL,React`,
       languages: [`TypeScript`, `glsl`],
       libraries: [`preact`, `twgl`],
       link: `https://marshmallow-sky.netlify.com/`,
       article: `https://dtf.ru/hackathon/82345-marshmallow-sky-postmortem`,
       screenshot: `marshmallow.jpg`,
       text: `
-  Писалась на хакатон от DTF и Playgendary. Предсказуемо ничего не заняла, но многому научила.
+    Писалась на хакатон от DTF и Playgendary. Предсказуемо ничего не заняла, но многому научила.
 
-  Геймплей не особо оригинальный, но набирающий популярность — полёт-планирование. Фишек две — «живой» постоянно меняющийся ландшафт и полноэкранный рейтрейсиг в 60fps на WebGL.
+    Геймплей не особо оригинальный, но набирающий популярность — полёт-планирование. Фишек две — «живой» постоянно меняющийся ландшафт и полноэкранный рейтрейсиг в 60fps на WebGL.
 
-  И очень подходящая «психоделическая» музыка от The Soundsmith.`,
+    И очень подходящая «психоделическая» музыка от The Soundsmith.`,
     },
     {
       title: `Boundless City`,
       quote: `GMPguy: I must admit, that the audiovisual side of this game, is by far the most unique of all the entries I've tried so far!`,
       source: `https://github.com/baturinsky/boundless-city`,
+      tags: `TypeScript,WebGL,React,Game Off`,
       languages: [`TypeScript`, `glsl`],
       libraries: [`preact`, `twgl`],
       link: [
@@ -301,12 +339,13 @@
       video: `https://i.imgur.com/iGTOlVf.mp4`,
       text: `Ну и самая «графоновая» моя игра на данный момент. Тот же «планерный» геймплей но «углубленный» системой апгрейдов и т.д. И гораздо более сложный алгоритм генерации уровня — бесконечного в высоту и ширину города. Ну и музыка от того же The Soundsmith.
 
-  Место, увы, только 22е. Даже по графике только 18е, хотя, наверное, это всё равно лучшая графика среди моих игр:)`,
+    Место, увы, только 22е. Даже по графике только 18е, хотя, наверное, это всё равно лучшая графика среди моих игр:)`,
     },
     {
       title: `Cellular: Automata`,
       quote: `Thermacon: Very interesting idea. Took me a while to get through some of them. Great interface. Amazing work!`,
       source: `https://github.com/baturinsky/cellular`,
+      tags: `TypeScript,Ludum Dare,React`,
       languages: `TypeScript`,
       libraries: `preact`,
       link: [
@@ -317,38 +356,41 @@
       video: `cellular.gif`,
       text: `Пазл на тему игры "Жизнь" Конвея
 
-Каждый уровень - это поле в клеточку, часть клеток закрашены ("живые"). 
-И набор карточек, на каждой их которых написано правило в формате Bx/Sy, где x и y - набор цифр. 
-Цифры после B (от birth) - это сколько соседей должна иметь пустая клетка, чтобы после активации этой карты она стала живой. 
-Цифры после S (от survive) - это сколько соседей должна иметь живая клетка, чтобы не "умереть" после действия карты.
+  Каждый уровень - это поле в клеточку, часть клеток закрашены ("живые").
+  И набор карточек, на каждой их которых написано правило в формате Bx/Sy, где x и y - набор цифр.
+  Цифры после B (от birth) - это сколько соседей должна иметь пустая клетка, чтобы после активации этой карты она стала живой.
+  Цифры после S (от survive) - это сколько соседей должна иметь живая клетка, чтобы не "умереть" после действия карты.
 
-Цель игры - сыграть все карты так, чтобы осталась хоть одна живая карта.
+  Цель игры - сыграть все карты так, чтобы осталась хоть одна живая карта.
 
-По местам чуть похуже предыдущего раза, но ненамного:
-<img src="img/cellular-rankings.png"/>
-      `,
-    }, {
+  По местам чуть похуже предыдущего раза, но ненамного:
+  <img src="img/cellular-rankings.png"/>
+        `,
+    },
+    {
       title: `Анализ Личности по Барнум-Фостеру`,
       source: `https://github.com/baturinsky/barnum`,
+      tags: `JavaScript`,
       languages: `JavaScript`,
       link: `https://barnum.netlify.app/#ru`,
       screenshot: `barnum.png`,
-      text: `Проект-шутка, "анализирующий личность", выдавая случайно перемешенный расплывчатые фразы.`
-    }, {
+      text: `Проект-шутка, "анализирующий личность", выдавая случайно перемешенный расплывчатые фразы.`,
+    },
+    {
       title: `Voronoi'less Terrain Generator`,
       source: `https://github.com/baturinsky/worldgen`,
+      tags: `JavaScript`,
       languages: `JavaScript`,
       link: `https://batgen.netlify.app/`,
       screenshot: `worldgen.png`,
       text: `
 
-      `
-    }
+        `,
+    },
   ];
 
-  let html = [];
 
-  function formatText(text){
+  function formatText(text) {
     return (text || "")
       .split("\n\n")
       .map((s) => `<p>${s}</p>`)
@@ -356,48 +398,90 @@
       .replace(/(https?:\/\/[\S]+)/gm, `<a href="$1">$1</a>`);
   }
 
-  document.getElementById("intro").innerHTML = formatText(document.getElementById("intro").innerHTML);
+  document.getElementById("intro").innerHTML = formatText(
+    document.getElementById("intro").innerHTML
+  );
 
-  for (let p of projects.reverse()) {
-    html.push(`<header>${p.title}</header>`);
-    let text = "";
-
-    if (p.quote) text += `<p class="quote">${p.quote}</p>${text}`;
-    text += p.text;
-    text = formatText(text);
-
-    let linksText = "";
-    for (let linkType of ["source", "link", "article"]) {
-      let links = p[linkType];
-      if (!links) continue;
-      if (!Array.isArray(links)) {
-        links = [links];
-      }
-      for (let link of links) {
-        let url, name;
-        if (link.indexOf("|") >= 0) {
-          [name, url] = link.split("|");
-        } else {
-          [name, url] = [lang[linkType], link];
-        }
-        linksText += `<div>${name}</div><div><a href="${url}">${url}</a></div>`;
-      }
+  let tags = {};
+  for (i = 0; i < projects.length; i++) {
+    let p = projects[i];
+    p.id = i;
+    let ptags = p.tags.split(",");
+    ptags.push("Все")
+    p.tags = ptags;
+    for (let t of ptags) {
+      tags[t] = tags[t] || [];
+      tags[t].push(p.id);
     }
-
-    text = `<div class="links">${linksText}</div>${text}`;
-
-    html.push(`<div>${text}</div>`);
-
-    let [screenshot, video] = [p.screenshot, p.video].map((link) =>
-      link ? (link.substr(0, 4) == "http" ? link : "img/" + link) : null
-    );
-
-    html.push(screenshot?
-      `<a href="${video || screenshot}">${
-        p.video ? `<div class="video">video</div>` : ""
-      }<img class="screenshot" src="${screenshot}"></a>`:`<div style="height:10em;"/>`
-    );
   }
 
-  document.getElementById("projects").innerHTML = html.join("\n");
+  let sortedTags = Object.keys(tags).sort(
+    (a, b) => tags[b].length - tags[a].length
+  );
+  console.log(tags);
+  console.log(sortedTags);
+
+  document.getElementById("tagsDiv").innerHTML = `${sortedTags
+    .map(
+      (tag) =>
+        `<div class="tagCheck"><input ${tag=="All"?"checked":""} onclick="renderTable('${tag}')" id="tag${tag}" type="radio" name="tags"/><label for="tag${tag}">${
+          tags[tag].length + " " + tag
+        }</label></div>`
+    )
+    .join("")}`;    
+
+  function renderTable(tag) {
+    let html = [];
+
+    for (let p of projects.reverse()) {      
+      let i = p.tags.indexOf(tag);
+      if(i<0)
+        continue;
+      
+      html.push(`<header>${p.title}</header>`);
+      let text = "";
+
+      if (p.quote) text += `<p class="quote">${p.quote}</p>${text}`;
+      text += p.text;
+      text = formatText(text);
+
+      let linksText = "";
+      for (let linkType of ["source", "link", "article"]) {
+        let links = p[linkType];
+        if (!links) continue;
+        if (!Array.isArray(links)) {
+          links = [links];
+        }
+        for (let link of links) {
+          let url, name;
+          if (link.indexOf("|") >= 0) {
+            [name, url] = link.split("|");
+          } else {
+            [name, url] = [lang[linkType], link];
+          }
+          linksText += `<div>${name}</div><div><a href="${url}">${url}</a></div>`;
+        }
+      }
+
+      text = `<div class="links">${linksText}</div>${text}`;
+
+      html.push(`<div>${text}</div>`);
+
+      let [screenshot, video] = [p.screenshot, p.video].map((link) =>
+        link ? (link.substr(0, 4) == "http" ? link : "img/" + link) : null
+      );
+
+      html.push(
+        screenshot
+          ? `<a href="${video || screenshot}">${
+              p.video ? `<div class="video">video</div>` : ""
+            }<img class="screenshot" src="${screenshot}"></a>`
+          : `<div style="height:10em;"/>`
+      );
+    }
+
+    document.getElementById("projectsDiv").innerHTML = html.join("\n");
+  }
+
+  renderTable("Все");
 </script>
