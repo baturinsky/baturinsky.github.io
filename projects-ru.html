@@ -95,18 +95,39 @@
     flex-flow: column;
   }
 
-  .ld{
+  .ld {
     background: #fca;
   }
+
+  .photo{
+    height: 200px;
+    width: auto;
+  }
+
+  .intro{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .intro>*{
+    margin: 10px;
+  }
+
 </style>
 <body>
   <div id="main">
     <div id="intro">
-      <h3>Александр Петров</h3>
-      https://github.com/baturinsky
-      https://twitter.com/baturinsky
-      https://vk.com/id436844849
-      https://ekaterinburg.hh.ru/resume/53b36d8bff08411a430039ed1f4e4963427930
+      
+      <div class="intro">
+        <div><a href="photo.jpg"><img class="photo" src="photo.jpg"/></a></div>
+        <div>
+          <h3>Александр Петров</h3>
+          https://github.com/baturinsky <br/>
+          https://twitter.com/baturinsky <br/>
+          https://vk.com/id436844849 <br/>
+          https://ekaterinburg.hh.ru/resume/53b36d8bff08411a430039ed1f4e4963427930 <br/>
+        </div>
+      </div>
     </div>
     <div id="tagsDiv"></div>
     <div id="projectsDiv"></div>
@@ -414,7 +435,7 @@
     let p = projects[i];
     p.id = i;
     let ptags = p.tags.split(",");
-    ptags.push("Все")
+    ptags.push("Все");
     p.tags = ptags;
     for (let t of ptags) {
       tags[t] = tags[t] || [];
@@ -429,20 +450,21 @@
   document.getElementById("tagsDiv").innerHTML = `${sortedTags
     .map(
       (tag) =>
-        `<div class="tagCheck${tag=="Ludum Dare"?" LD":""}"><input ${tag=="Все"?"checked":""} onclick="renderTable('${tag}')" id="tag${tag}" type="radio" name="tags"/><label for="tag${tag}">${
+        `<div class="tagCheck${tag == "Ludum Dare" ? " LD" : ""}"><input ${
+          tag == "Все" ? "checked" : ""
+        } onclick="renderTable('${tag}')" id="tag${tag}" type="radio" name="tags"/><label for="tag${tag}">${
           tags[tag].length + " " + tag
         }</label></div>`
     )
-    .join("")}`;    
+    .join("")}`;
 
   function renderTable(tag) {
     let html = [];
 
-    for (let p of projects) {      
+    for (let p of projects) {
       let i = p.tags.indexOf(tag);
-      if(i<0)
-        continue;
-      
+      if (i < 0) continue;
+
       html.push(`<header>${p.title}</header>`);
       let text = "";
 
