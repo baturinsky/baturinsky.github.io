@@ -94,13 +94,19 @@
     display: flex;
     flex-flow: column;
   }
+
+  .ld{
+    background: #fca;
+  }
 </style>
 <body>
   <div id="main">
     <div id="intro">
       <h3>Александр Петров</h3>
-      https://github.com/baturinsky https://twitter.com/baturinsky
+      https://github.com/baturinsky
+      https://twitter.com/baturinsky
       https://vk.com/id436844849
+      https://ekaterinburg.hh.ru/resume/53b36d8bff08411a430039ed1f4e4963427930
     </div>
     <div id="tagsDiv"></div>
     <div id="projectsDiv"></div>
@@ -389,6 +395,7 @@
     },
   ];
 
+  projects.reverse();
 
   function formatText(text) {
     return (text || "")
@@ -418,13 +425,11 @@
   let sortedTags = Object.keys(tags).sort(
     (a, b) => tags[b].length - tags[a].length
   );
-  console.log(tags);
-  console.log(sortedTags);
 
   document.getElementById("tagsDiv").innerHTML = `${sortedTags
     .map(
       (tag) =>
-        `<div class="tagCheck"><input ${tag=="All"?"checked":""} onclick="renderTable('${tag}')" id="tag${tag}" type="radio" name="tags"/><label for="tag${tag}">${
+        `<div class="tagCheck${tag=="Ludum Dare"?" LD":""}"><input ${tag=="Все"?"checked":""} onclick="renderTable('${tag}')" id="tag${tag}" type="radio" name="tags"/><label for="tag${tag}">${
           tags[tag].length + " " + tag
         }</label></div>`
     )
@@ -433,7 +438,7 @@
   function renderTable(tag) {
     let html = [];
 
-    for (let p of projects.reverse()) {      
+    for (let p of projects) {      
       let i = p.tags.indexOf(tag);
       if(i<0)
         continue;
