@@ -23,7 +23,7 @@ const setSeed = (n) => {
       timeoutId = setTimeout(callback, dur);
     }
   };
-}, hexToRgb = (h) => [1, 2, 3, 4].map((i) => parseInt(h[i] ?? "f", 16) / 15), loop$1 = (l, f) => [...new Array(l)].map((v, i) => f(i)), bestBy = (list, evaluator = (a) => a) => list.reduce((best, k) => {
+}, hexToRgb = (h) => [1, 2, 3, 4].map((i) => parseInt(h[i] ?? "f", 16) / 15), loop = (l, f) => [...new Array(l)].map((v, i) => f(i)), bestBy = (list, evaluator = (a) => a) => list.reduce((best, k) => {
   let v = evaluator(k);
   return !(v <= best[1]) ? [k, v] : best;
 }, [void 0, Number.NEGATIVE_INFINITY]), worstBy = (list, evaluator = (a) => a) => {
@@ -38,7 +38,7 @@ const setSeed = (n) => {
   let i = list.indexOf(item);
   if (i != -1)
     list.splice(i, 1);
-}, removeDuplicates = (a) => [...new Set(a)], nof = (variants, slots, filled) => shuffle(loop$1(slots, (i) => i < filled ? randomElement(variants) : void 0)), shuffle = (a) => loop$1(a.length, () => a.splice(rng(a.length), 1)[0]), objMap = (a, f) => Object.fromEntries(Object.entries(a).map(([k, v]) => [k, f(v, k)])), objFilter = (a, f) => Object.fromEntries(Object.entries(a).filter(([k, v]) => f(v, k))), objForEach = (a, f) => Object.entries(a).forEach(([k, v]) => f(v, k)), objEvery = (a, f) => Object.entries(a).every(([k, v]) => f(v, k)), objAdd = (a, b = {}, times = 1) => {
+}, removeDuplicates = (a) => [...new Set(a)], nof = (variants, slots, filled) => shuffle(loop(slots, (i) => i < filled ? randomElement(variants) : void 0)), shuffle = (a) => loop(a.length, () => a.splice(rng(a.length), 1)[0]), objMap = (a, f) => Object.fromEntries(Object.entries(a).map(([k, v]) => [k, f(v, k)])), objFilter = (a, f) => Object.fromEntries(Object.entries(a).filter(([k, v]) => f(v, k))), objForEach = (a, f) => Object.entries(a).forEach(([k, v]) => f(v, k)), objEvery = (a, f) => Object.entries(a).every(([k, v]) => f(v, k)), objAdd = (a, b = {}, times = 1) => {
   Object.keys(b).forEach((k) => a[k] = (a[k] ?? 0) + b[k] * times);
   return a;
 }, objScale = (a, scale2) => objMap(a, (v) => v * scale2), objStripFalsy = (a) => objFilter(a, (v) => v), formatNumber = (x) => {
@@ -52,9 +52,9 @@ const setSeed = (n) => {
 }, rng = (n) => {
   return n == -1 ? seed : n == void 0 ? rngi(1e9) / 1e9 : rngi(n);
 };
-const PI = Math.PI, TWO_PI = PI * 2, ww = 128, wh = 96, ws = ww * wh, neighborShift = [1 - ww, 1, ww, ww - 1, -1, -ww], photoScale = [16, 12], minusHalfPhotoScale = scale(photoScale, -0.5), photoShift = (v) => sum(sum(v, minusHalfPhotoScale), [0, 5]), neighborBy = (at, n) => at + n + (n % ww > ww + n ? -ww : 0), neighborhood = loop$1(100, (radius) => neighborShift.map((ns, nsi) => [0, ...loop$1(
+const PI = Math.PI, TWO_PI = PI * 2, ww = 128, wh = 96, ws = ww * wh, neighborShift = [1 - ww, 1, ww, ww - 1, -1, -ww], photoScale = [16, 12], minusHalfPhotoScale = scale(photoScale, -0.5), photoShift = (v) => sum(sum(v, minusHalfPhotoScale), [0, 5]), neighborBy = (at, n) => at + n + (n % ww > ww + n ? -ww : 0), neighborhood = loop(100, (radius) => neighborShift.map((ns, nsi) => [0, ...loop(
   radius,
-  (r) => loop$1(r + 1, (x) => ns * (r + 1) + neighborShift[(nsi + 2) % 6] * x)
+  (r) => loop(r + 1, (x) => ns * (r + 1) + neighborShift[(nsi + 2) % 6] * x)
 )]).flat(2)), toXY = (ind) => [ind % ww, ~~(ind / ww)], worldCoord = (at) => {
   let [x, y] = toXY(at);
   return [(x + y / 2) % ww, y];
@@ -146,7 +146,7 @@ const biomesByNames = {
     special: { sugarcane: 3 }
   },
   jungles: {
-    color: "#4a4",
+    color: "#0b0",
     prop: PALM,
     travel: 4,
     habitability: 1,
@@ -203,7 +203,7 @@ const convertResources = (raw) => {
   ore: [83, "#00f,,#008"],
   coal: [83, "#000"],
   iron: [84, "#888,"],
-  copper: [84, "#f80,"],
+  copper: [84, "#f80,#fff,#fff"],
   //huts: [84, "#800,"],
   salt: [83, "#fff,,#aaa"],
   trees: FIR,
@@ -264,6 +264,7 @@ const convertResources = (raw) => {
   engines: [92, "#444"],
   electronics: [92, "#0a0"],
   walkFar: [120, "#f80"],
+  time: [120, "#fff"],
   tab0: 80,
   tab1: [91, "#fca"],
   tab2: 95,
@@ -321,7 +322,8 @@ const iterationsPerTurn = 7, cellCapPerIncome = 100, incomePerResource = 100, bi
   { working: -1, thinking: -2, engines: -1, fuel: -3, crafting: 15 },
   { vehicles: -1, fuel: -5, travel: 40 },
   { vehicles: -1, fuel: -5, diving: 30 },
-  { engines: -1, fuel: -5, energy: 30 },
+  { engines: -1, fuel: -10, energy: 100 },
+  { fuel: -1, energy: 3 },
   { magic: -1, fertilisers: 1 },
   { crafting: -1, iron: -1, tools: 3 },
   { crafting: -1, lumber: -1, tools: 1 },
@@ -453,11 +455,18 @@ const iterationsPerTurn = 7, cellCapPerIncome = 100, incomePerResource = 100, bi
     food: ~~(i / 3) + 1
   }));
 };
-const loop = (l, f) => [...new Array(l)].map((v, i) => f(i));
-const utilityBase = 0.9, DEFAULT_STOCK_CAP = 1e24;
-const marginalUtilityLookup = loop(1e5, (n) => 1e6 * Math.pow(utilityBase, n));
-const distanceTax = 1e-3, happinessGainMultiplier = 15, consumerGoodsHappiness = 3;
-const marginalUtility = (amount) => amount > 1e5 ? 0 : marginalUtilityLookup[~~amount];
+const utilityBase = 0.93, DEFAULT_STOCK_CAP = 1e24;
+const marginalUtilityLookup = [];
+for (let i = 0; i < 1e5; i++) {
+  let v = 1e3 * Math.pow(utilityBase, i);
+  if (!v)
+    break;
+  marginalUtilityLookup[i] = v;
+}
+const marginalUtilityLookupSize = marginalUtilityLookup.length;
+console.log(marginalUtilityLookupSize);
+const distanceTax = 5e-3, happinessGainMultiplier = 15, consumerGoodsHappiness = 3;
+const marginalUtility = (amount) => amount > marginalUtilityLookupSize ? 0 : marginalUtilityLookup[~~amount];
 class MarketAgent {
   uses = {};
   size = 1;
@@ -466,18 +475,21 @@ class MarketAgent {
   ravg = 100;
   /** To tell agents apart */
   name;
-  /** Ways of convert one goods into the others */
-  //recipes: GoodNumbers[] = []
+  /** Ways of convert one goods into the others, and where (locally, or on one of the hexes nearby) */
   recipes = [];
   ownRecipes = [];
   places = [];
+  /** History of the  */
   transfers = [];
   /** How much of this good market receives (or loses) per day, per size  */
   income = {};
+  /** Whitelist of what this agent would trade away */
   sells;
+  /** Whitelist of what this agent would accept in trade */
   buys;
   /** How much of this good market currently has */
   stock = {};
+  /** Maximum value of a good in stock */
   cap = {};
   //trades = {} as any;
   consumed = {};
@@ -612,7 +624,11 @@ class MarketAgent {
   }
   /** Gain or lose goods */
   gain(good, amount) {
-    this.stock[good] = clamp(0, (this.stock[good] ?? 0) + ~~amount, this.size * (this.cap[good] ?? DEFAULT_STOCK_CAP));
+    this.stock[good] = clamp(
+      0,
+      (this.stock[good] ?? 0) + ~~amount,
+      this.size * (this.cap[good] ?? DEFAULT_STOCK_CAP)
+    );
     if (this.stock[good] < 0) debugger;
   }
   iterate() {
@@ -931,6 +947,9 @@ const savePrefix = "CLP:", saveTitlePrefix = "CLP!", saveAll = (slot = 0) => {
     }
     data.s.forEach((v, i) => u.c[i].seen = !!v);
     setTimeout(() => select(selected()), 20);
+    for (let a of u.a) {
+      a.transfers = a.transfers?.map(loadRecipeX) ?? [];
+    }
     return true;
   }
   return false;
@@ -950,7 +969,8 @@ const savePrefix = "CLP:", saveTitlePrefix = "CLP!", saveAll = (slot = 0) => {
       ...saveAsIs(v),
       dest: v.dest?.at,
       cell: v.cell.at,
-      race: v.race.name
+      race: v.race.name,
+      transfers: v.transfers?.map(saveRecipeX)
     } : {}
   };
 }, load = (a, v) => {
@@ -961,13 +981,26 @@ const savePrefix = "CLP:", saveTitlePrefix = "CLP!", saveAll = (slot = 0) => {
       ...saveAsIs(v),
       cell: u.c[v.cell],
       dest: u.c[v.dest],
-      race: races[v.race]
+      race: races[v.race],
+      transfers: v.transfers
     } : {}
   });
+}, agentToId = (a) => a instanceof Agent ? "a" + u.a.indexOf(a) : "c" + a.at, idToAgent = (id) => {
+  let a = (id.charAt(0) == "a" ? u.a : u.c)[id.slice(1)];
+  if (a == void 0)
+    debugger;
+  return a;
+}, saveRecipeX = (r) => ({ place: agentToId(r.place), recipe: r.recipe }), loadRecipeX = (r) => ({ place: idToAgent(r.place), recipe: r.recipe });
+const plainText = "# 1.0.3\r\nEconomy tweaks\r\n\r\n# 1.0.2\r\nSafari compatibility, color tweaks\r\n\r\n# 1.0.1\r\nCleaned up, removed dataURL usage, experiments with jsx\r\n\r\n# 1.0\r\njs13k version";
+console.log(plainText);
+const specialTags = {
+  icon: (prop) => icon(prop.of, prop.tip)
 };
 function el(tag, args, ...children) {
   if (typeof tag == "function")
     return children.join("");
+  if (specialTags[tag])
+    return specialTags[tag]({ ...args, children });
   return `<${tag}${args ? Object.entries(args).map(([a, b]) => ` ${a}="${b}"`).join(" ") : ""}>${children.join("")}</${tag}>`;
 }
 let menuOn = false;
@@ -991,7 +1024,7 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
   drawIcons(buf);
   div.parentElement?.replaceChild(buf, div);
 }, agentButtons = () => {
-  return /* @__PURE__ */ el("div", { class: "abtn" }, loop$1(
+  return /* @__PURE__ */ el("div", { class: "abtn" }, loop(
     5,
     (t) => /* @__PURE__ */ el("button", { id: "tab" + t, class: t == state.tab ? "h" : "" }, icon("tab" + t, tabs[t]))
   ).join(""));
@@ -1002,7 +1035,7 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
     icon2.children[0].innerHTML = "";
     icon2.children[0].appendChild(resourceIcon(n));
   }
-}, ttx = (tip) => tip == "notip" ? "" : `<span class=ttx>${tip}</span>`, icon = (name, tip) => /* @__PURE__ */ el("span", { "data-icon": name, class: "icon" }, /* @__PURE__ */ el("span", { class: "img" }), ttx(tip ?? name)), asList = (a) => a ? `${Object.entries(a).map(([k, v]) => goodSpan(k, v)).join("")}` : void 0, goodSpan = (good, value) => /* @__PURE__ */ el("span", { class: "good" }, icon(good, "notip"), formatNumber(value), ttx(good)), fancyRecipe = (r) => {
+}, ttx = (tip) => tip == "notip" ? "" : `<span class=ttx>${tip}</span>`, icon = (name, tip) => /* @__PURE__ */ el("span", { "data-icon": name, class: "icon" }, /* @__PURE__ */ el("span", { class: "img" }), ttx(tip ?? name)), asList = (a) => a ? `${Object.entries(a).map(([k, v]) => goodSpan(k, v)).join("")}` : void 0, goodSpan = (good, value) => /* @__PURE__ */ el("span", { class: "good" }, /* @__PURE__ */ el("icon", { of: good, tip: "notip" }), formatNumber(value), ttx(good)), fancyRecipe = (r) => {
   let [minus, plus] = [objFilter(r, (v) => v < 0), objFilter(r, (v) => !(v < 0))];
   let s;
   if (Object.keys(minus).length) {
@@ -1015,18 +1048,21 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
   let cell = pointedCell();
   let lines = [];
   if (cell) {
-    lines.push(`${agentTitle(cell)}${asList(objStripFalsy(cell?.stock))}`);
-    cell.a.forEach((a) => lines.push(agentTitle(a)));
     lines.push(
-      "!income/turn",
-      asList(cell.income),
-      "!land jobs",
-      `<div class=tc>${cell.ownRecipes.map(fancyRecipe).join("</br>")}</div>`,
-      ...Object.keys(cell.uses).length ? [
-        "!jobs this turn",
-        recipeUsedStats(cell)
-      ] : []
+      asDivs([
+        `${agentTitle(cell)}${asList(objStripFalsy(cell?.stock))}`,
+        `${icon("time")}${asList(cell.income)}`,
+        doubleColumn(cell.ownRecipes.map(fancyRecipe))
+      ])
     );
+    if (Object.keys(cell.uses).length)
+      lines.push(
+        [
+          "!jobs this turn",
+          recipeUsedStats(cell)
+        ]
+      );
+    cell.a.forEach((a) => lines.push(agentTitle(a)));
   }
   updateDiv(Tip, ...lines);
 }, asDivs = (l) => l.map((a) => /* @__PURE__ */ el("div", null, a)).join(""), doubleColumn = (a) => {
@@ -1048,7 +1084,8 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
         doubleColumn(agent.ownRecipes.map(
           (r) => {
             let uses = selected().recipeUseMultiplier({ place: selected(), recipe: r });
-            return selected().happy() && uses > 0 ? /* @__PURE__ */ el("button", { "data-recipe": JSON.stringify(r) }, fancyRecipe(objScale(r, uses))) : fancyRecipe(r);
+            let retext = JSON.stringify(r).replaceAll('"', "`");
+            return selected().happy() && uses > 0 ? /* @__PURE__ */ el("button", { "data-recipe": retext }, fancyRecipe(objScale(r, uses))) : fancyRecipe(r);
           }
         ))
       ],
@@ -1105,7 +1142,7 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
   updateDiv(
     Mid,
     /* @__PURE__ */ el(el, null, /* @__PURE__ */ el("h1", null, "Clopital"), "Seed:", /* @__PURE__ */ el("input", { type: "number", id: "SEED", value: state.seed }), " Land:", /* @__PURE__ */ el("input", { type: "range", id: "LAND", value: state.land, min: 1, max: 7 }), " ", /* @__PURE__ */ el("button", { id: "New" }, "New game")),
-    /* @__PURE__ */ el(el, null, /* @__PURE__ */ el("h4", null, "Saves"), htmlTable(loop$1(
+    /* @__PURE__ */ el(el, null, /* @__PURE__ */ el("h4", null, "Saves"), htmlTable(loop(
       13,
       (i) => [
         i || "auto",
@@ -1116,13 +1153,13 @@ const Tip = 0, Info = 1, Mid = 2, showButtons = () => {
           localStorage[saveTitlePrefix + i]
         ] : []
       ]
-    )))
+    )), /* @__PURE__ */ el("h4", null, "CHANGELOG"), /* @__PURE__ */ el("pre", null, plainText))
   );
 };
 let filters = {}, sprites;
 const AtlasSpriteSize = 16;
 const atlasSprite = (id, filter) => cutSpriteFromAtlas(id % AtlasSpriteSize * AtlasSpriteSize, ~~(id / AtlasSpriteSize) * AtlasSpriteSize, AtlasSpriteSize, AtlasSpriteSize, filter), initSprites = () => {
-  sprites = loop$1(160, (i) => atlasSprite(i));
+  sprites = loop(160, (i) => atlasSprite(i));
 }, cutSpriteFromAtlas = (x, y, w, h, filter) => {
   let [sprite, sx] = canvasElementAndContext(w, h);
   sx.drawImage(atlas, x, y, w, h, 0, 0, w, h);
@@ -1142,7 +1179,6 @@ const atlasSprite = (id, filter) => cutSpriteFromAtlas(id % AtlasSpriteSize * At
 ], spriteOf = (a) => sprites[a.race?.sprite], safariRecolor = (rgbReplace) => {
   let name = JSON.stringify(rgbReplace);
   if (!filters[name]) {
-    console.log(rgbReplace);
     filters[name] = (c) => {
       let cx2 = c.getContext("2d"), imageData = cx2.getImageData(0, 0, c.width, c.height), buffer = new Uint8Array(imageData.data.buffer);
       for (let i = 0; i < buffer.length; i += 4) {
@@ -1189,7 +1225,9 @@ class Agent extends MarketAgent {
   steps = 0;
   anim;
   happiness;
+  /**Pathfinding data cache */
   _pathfindData;
+  /** Where pathfind data was calculated. If agent is in the other cell, it should be updated */
   _pathfindDataCell;
   pathfindData() {
     if (this.cell != this._pathfindDataCell || !this._pathfindData) {
@@ -1198,6 +1236,7 @@ class Agent extends MarketAgent {
     }
     return this._pathfindData;
   }
+  /** If Agent is happy enough to be controlled */
   happy() {
     return this.queen() || this.happiness > 999;
   }
@@ -1277,7 +1316,7 @@ class Agent extends MarketAgent {
     this.transfers = [];
     this.consumed = {};
     this.uses = {};
-    loop$1(iterationsPerTurn, () => this.iterate());
+    loop(iterationsPerTurn, () => this.iterate());
     this.happiness = this.nextHappiness();
     if (this.size > 1) {
       let popGain = ~~((rng(this.happiness) - rng(this.size)) / 100);
@@ -1357,8 +1396,8 @@ class Agent extends MarketAgent {
   giftCalc(good, give) {
     let giver = give ? queen() : this;
     let mu = marginalUtility(this.stock[good] ?? 0);
-    let amount = Math.ceil(giver.stock[good] / 10);
-    let value = ~~(mu * amount * (give ? 0.9 : 1.1) / 1e6);
+    let amount = Math.ceil(giver.stock[good] / 20);
+    let value = ~~((mu * amount * (give ? 0.9 : 1.1)) ** 0.45);
     if (!give)
       value++;
     if (!value)
@@ -1407,23 +1446,23 @@ class Universe {
     }
   }
   generate() {
-    this.c = loop$1(ws, (at) => new Cell(at));
+    this.c = loop(ws, (at) => new Cell(at));
     setSeed(this.seed);
     this.c.forEach((c) => {
       c.neighborsByDir = neighborShift.map((ns) => this.c[neighborBy(ns, c.at)]).filter((c2) => c2);
       c.neighbors = c.neighborsByDir.filter((c2) => c2);
       c.neighborhood = [c, ...c.neighbors];
     });
-    loop$1(50, () => this.erect(this.anyCell(), rng(3) + 1, 3));
+    loop(50, () => this.erect(this.anyCell(), rng(3) + 1, 3));
     let averageElev = listSum(this.c, (cell) => cell.elev) / ws;
     this.c.forEach((cell) => cell.elev = Math.log((cell.elev + 3) / averageElev));
     this.byElev = [...this.c].sort((a, b) => a.elev - b.elev);
     let seaQuantile = 0.85 - this.land * 0.08;
     this.elev = [seaQuantile - 0.1, seaQuantile, 0.82, 0.97].map((h) => this.quantile(h));
     {
-      loop$1(1e4, () => erode(this.anyCell()));
+      loop(1e4, () => erode(this.anyCell()));
       this.rivers = [];
-      loop$1(500, () => {
+      loop(500, () => {
         let path = erode(this.anyCell());
         if (path && path.length > 1) {
           this.rivers.push(path);
@@ -1435,7 +1474,7 @@ class Universe {
       let latitude = Math.abs(0.5 - cell.at / ws) * 2;
       cell.t = 1.7 - latitude - (cell.elev - this.elev[ESea]) / 2;
     });
-    loop$1(
+    loop(
       12,
       (i) => this.c.forEach((cell) => {
         let clouds = (cell.elev <= this.elev[ESea] ? 10 : cell.rivers ? 5 : 0) * (Math.cos(cell.at / ws * 12.5) + 1 + rng() / 3);
@@ -1500,7 +1539,7 @@ class Universe {
 const layerThickness = 4, mapRevealDuration = 700, BIGCURSOR = 16, CURSOR = 18, RED_SHADOW = 65, GREEN_SHADOW = 66, RAINBOW = 118;
 let worldPhoto, previousWorldPhoto, ctx, cx, revealingMap = 0, dt = 1, lastT = Date.now();
 [
-  ...loop$1(6, (i) => [Math.sin(i / 6 * TWO_PI) / 3 + 0.2, Math.cos(i / 6 * TWO_PI) / 3 + 0.2])
+  ...loop(6, (i) => [Math.sin(i / 6 * TWO_PI) / 3 + 0.2, Math.cos(i / 6 * TWO_PI) / 3 + 0.2])
 ].map((p) => muls(p, photoScale)).sort((a, b) => a[1] - b[1]);
 const propSlots = [[-1, -2], [-3, 0], [4, 0], [3, 3], [-4, 4], [-1, 7]], drawSprite = (sprite, pos, alpha = 1) => {
   if (alpha != 1) {
@@ -1646,8 +1685,8 @@ const propSlots = [[-1, -2], [-3, 0], [4, 0], [3, 3], [-4, 4], [-1, 7]], drawSpr
   previousWorldPhoto = worldPhoto;
   revealingMap = mapRevealDuration;
   [worldPhoto, cx] = canvasElementAndContext((ww + 0.5) * photoScale[0], wh * photoScale[1]);
-  u.drawOrder = loop$1(wh, (row) => loop$1(ww, (col) => row * ww + (col + ww - ~~(row / 2)) % ww)).flat().map((at) => u.c[at]).filter((c) => c.seen);
-  loop$1(3, (drawingLayer) => {
+  u.drawOrder = loop(wh, (row) => loop(ww, (col) => row * ww + (col + ww - ~~(row / 2)) % ww)).flat().map((at) => u.c[at]).filter((c) => c.seen);
+  loop(3, (drawingLayer) => {
     u.drawOrder.forEach((cell) => {
       let pos = cell.topLeft();
       if (cell.layer == drawingLayer && !cell.bedrock) {
@@ -1746,7 +1785,7 @@ const enableControls = () => {
           generateUniverse();
           select(queen());
           hideMenu();
-          loop$1(10, nextTurn);
+          nextTurn();
           select(queen());
           update({ turn: 1 });
         }, 10);
@@ -1787,7 +1826,7 @@ const enableControls = () => {
       showSavesMenu();
     }
     if (data.recipe) {
-      selected().useRecipe({ place: selected(), recipe: JSON.parse(data.recipe) });
+      selected().useRecipe({ place: selected(), recipe: JSON.parse(data.recipe.replaceAll("`", `"`)) });
       select();
     }
     if (element.dataset.a) {
@@ -1818,7 +1857,6 @@ const enableControls = () => {
       lastMousePos ??= mousePos;
       if (buttonsDown[0] || buttonsDown[1]) {
         let delta = sub(mousePos, lastMousePos);
-        console.log(delta);
         shiftViewBy(delta);
       } else {
         if (u.c[tilePointed]?.seen && !e.shiftKey) {
@@ -1945,15 +1983,23 @@ const nextTurn = () => {
   color: #400;
 }
 
+#INFO {
+  max-width: 400px;
+}
+
+#INFO pnl {
+  min-width: 400px;
+}
+
+
 #TIP,
 #INFO {
   position: absolute;
   top: -10px;
-  max-width: 340px;
   height: 100vh;
   pointer-events: none;
   user-select: none;
-  
+
 }
 
 #TIP {
@@ -1966,7 +2012,6 @@ const nextTurn = () => {
   margin: 5px;
   border: #4004 solid;
   border-width: 2px 4px;
-  min-width: 330px;
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1974,6 +2019,7 @@ const nextTurn = () => {
   text-align: center;
 }
 
+/** Tab select buttons */
 .ptl {
   margin-bottom: -24px;
   font-size: 80%;
@@ -2020,13 +2066,14 @@ button.h {
   background: #fff;
 }
 
-button:active{
+button:active {
   box-shadow: 0 0 10px #fff;
   transform: scale(1.2);
 }
 
 
 .icon .img canvas {
+  position: relative;
   margin: 0 0 0 3px;
   transform: scale(1.5) translateY(1px);
   filter: drop-shadow(1px 1px);
@@ -2039,6 +2086,7 @@ button:active{
   white-space: nowrap;
 }
 
+/** Tooltip */
 .ttx {
   visibility: hidden;
   position: absolute;
@@ -2050,19 +2098,19 @@ button:active{
 }
 
 
-
-.good,
-button {
-}
-
 .abtn {
   text-align: center;
 }
 
-.abtn button{
+.abtn button {
   padding-bottom: 5px;
 }
 
+
+.CS {
+  display: flex;
+  flex-direction: row;
+}
 
 .tc {
   columns: 2;
@@ -2083,17 +2131,13 @@ td {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  max-height: 100vh;
 }
 
 #X {
   position: absolute;
   right: 0;
   top: 0;
-}
-
-button *[data-icon] canvas {
-  padding: 5px;
-  pointer-events: none;
 }
 
 #INFO.u>*:first-child {
@@ -2130,8 +2174,7 @@ input {
   }
 }
 
-.grow-shrink-animation
-{
+.grow-shrink-animation {
   animation: .3s infinite alternate;
   animation-name: grow-shrink;
 }</style>
